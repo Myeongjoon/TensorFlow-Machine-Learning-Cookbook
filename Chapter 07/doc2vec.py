@@ -42,6 +42,7 @@ sess = tf.compat.v1.Session()
 batch_size = 500
 vocabulary_size = 7500
 generations = 100000
+generations = 1000
 model_learning_rate = 0.001
 
 embedding_size = 200  # Word embedding size
@@ -216,7 +217,7 @@ log_doc_indices = tf.slice(log_x_inputs, [0, max_words], [logistic_batch_size, 1
 log_doc_embed = tf.nn.embedding_lookup(doc_embeddings, log_doc_indices)
 
 # concatenate embeddings
-log_final_embed = tf.concat(1, [log_embed, tf.squeeze(log_doc_embed)])
+log_final_embed = tf.concat(axis=1, values=[log_embed, tf.squeeze(doc_embed)])
 
 # Define model:
 # Create variables for logistic regression
