@@ -10,6 +10,7 @@
 # analysis on the movie review dataset.
 #
 import tensorflow.compat.v1 as tf
+
 tf.disable_v2_behavior()
 import matplotlib.pyplot as plt
 import numpy as np
@@ -244,6 +245,11 @@ logistic_train_step = logistic_opt.minimize(logistic_loss, var_list=[A, b])
 init = tf.global_variables_initializer()
 sess.run(init)
 
+import tf_slim as slim
+
+models = tf.trainable_variables()
+slim.model_analyzer.analyze_vars(models, print_info=True)
+
 # Start Logistic Regression
 print('Starting Logistic Doc2Vec Model Training')
 train_loss = []
@@ -251,6 +257,7 @@ test_loss = []
 train_acc = []
 test_acc = []
 i_data = []
+
 for i in range(10000):
     rand_index = np.random.choice(text_data_train.shape[0], size=logistic_batch_size)
     rand_x = text_data_train[rand_index]
