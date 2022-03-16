@@ -111,7 +111,7 @@ doc_indices = tf.slice(x_inputs, [0, window_size], [batch_size, 1])
 doc_embed = tf.nn.embedding_lookup(doc_embeddings, doc_indices)
 
 # concatenate embeddings
-final_embed = tf.concat(1, [embed, tf.squeeze(doc_embed)])
+final_embed = tf.concat(axis=1, values=[embed, tf.squeeze(doc_embed)])
 
 # Get loss from prediction
 loss = tf.reduce_mean(tf.nn.nce_loss(nce_weights, nce_biases, final_embed, y_target,
