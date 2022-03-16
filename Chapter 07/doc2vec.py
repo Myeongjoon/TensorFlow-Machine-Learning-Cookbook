@@ -43,7 +43,6 @@ sess = tf.compat.v1.Session()
 batch_size = 500
 vocabulary_size = 7500
 generations = 100000
-generations = 1000
 model_learning_rate = 0.001
 
 embedding_size = 200  # Word embedding size
@@ -218,7 +217,7 @@ log_doc_indices = tf.slice(log_x_inputs, [0, max_words], [logistic_batch_size, 1
 log_doc_embed = tf.nn.embedding_lookup(doc_embeddings, log_doc_indices)
 
 # concatenate embeddings
-log_final_embed = tf.concat(axis=1, values=[log_embed, tf.squeeze(doc_embed)])
+log_final_embed = tf.concat(axis=1, values=[log_embed, tf.squeeze(log_doc_embed)])
 
 # Define model:
 # Create variables for logistic regression
@@ -230,7 +229,7 @@ model_output = tf.add(tf.matmul(log_final_embed, A), b)
 
 # Declare loss function (Cross Entropy loss)
 logistic_loss = tf.reduce_mean(
-    tf.nn.sigmoid_cross_entropy_with_logits(labels=model_output, logits=tf.cast(log_y_target, tf.float32)))
+    tf.nn.sigmoid_cross_entropy_with_logits(logits=model_output, labels=tf.cast(log_y_target, tf.float32)))
 
 # Actual Prediction
 prediction = tf.round(tf.sigmoid(model_output))
@@ -244,12 +243,6 @@ logistic_train_step = logistic_opt.minimize(logistic_loss, var_list=[A, b])
 # Intitialize Variables
 init = tf.global_variables_initializer()
 sess.run(init)
-
-import tf_slim as slim
-
-models = tf.trainable_variables()
-slim.model_analyzer.analyze_vars(models, print_info=True)
-
 # Start Logistic Regression
 print('Starting Logistic Doc2Vec Model Training')
 train_loss = []
