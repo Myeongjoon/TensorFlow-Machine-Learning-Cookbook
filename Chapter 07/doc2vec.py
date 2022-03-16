@@ -9,7 +9,8 @@
 # documents into train/test and use these doc vectors to do sentiment
 # analysis on the movie review dataset.
 #
-import tensorflow as tf
+import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 import matplotlib.pyplot as plt
 import numpy as np
 import random
