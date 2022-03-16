@@ -35,7 +35,7 @@ if not os.path.exists(data_folder_name):
     os.makedirs(data_folder_name)
 
 # Start a graph session
-sess = tf.Session()
+sess = tf.compat.v1.Session()
 
 # Declare model parameters
 batch_size = 500
